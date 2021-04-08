@@ -18,13 +18,100 @@ import 'package:flutter_suitup/flutter_suitup.dart';
 // }
 //
 
+enum ButtonType { none, white, light, dark, black, text, ghost, primary, link, info, success, warning, danger }
+
 class Button extends StatelessWidget {
+  final Widget child;
+  final ButtonType type;
+  final Color color;
+  final Function onTap;
+  final bool active;
+  final EdgeInsets padding;
+  final EdgeInsets margin;
+
+  /// A button element
+  ///
+  /// When [color] is defined the [type] parameter is completely ignored.
+  ///
+  const Button({
+    Key key,
+    @required this.child,
+    this.type = ButtonType.primary,
+    this.color,
+    @required this.onTap,
+    this.active = true,
+    this.padding,
+    this.margin,
+  })  : assert(child != null, 'This element needs a child'),
+        assert(type != null || color != null, 'You need to provide a TYPE or a COLOR to your button'),
+        assert(onTap != null, 'Provide an action to trigger on tap this ACTIVE button'),
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final s = SuitupSettings.instance;
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: s.em, vertical: s.em / 2),
+    var computedColor = color ?? _computeColorByType();
+
+    // @todo Default text style
+
+    return GestureDetector(
+      onTap: active ? onTap : null,
+      child: Container(
+        padding: padding ?? EdgeInsets.symmetric(horizontal: s.em, vertical: s.em / 2),
+        margin: margin ?? EdgeInsets.symmetric(horizontal: 3), // @todo setting
+        decoration: BoxDecoration(
+          color: computedColor,
+          borderRadius: BorderRadius.circular(6), // @todo setting
+        ),
+        child: child,
+      ),
     );
+  }
+
+  Color _computeColorByType() {
+    Color computedColor;
+    switch (type) {
+      case ButtonType.white:
+        computedColor = Color.fromRGBO(255, 255, 255, 1); // @todo setting
+        break;
+      case ButtonType.light:
+        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        break;
+      case ButtonType.dark:
+        computedColor = Color.fromRGBO(0, 0, 0, 1); // @todo setting
+        break;
+      case ButtonType.black:
+        computedColor = Color.fromRGBO(0, 0, 0, 1); // @todo setting
+        break;
+      case ButtonType.text:
+        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        break;
+      case ButtonType.ghost:
+        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        break;
+      case ButtonType.primary:
+        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        break;
+      case ButtonType.link:
+        computedColor = Color.fromRGBO(72, 95, 199, 1); // @todo setting
+        break;
+      case ButtonType.info:
+        computedColor = Color.fromRGBO(62, 142, 208, 1); // @todo setting
+        break;
+      case ButtonType.success:
+        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        break;
+      case ButtonType.warning:
+        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        break;
+      case ButtonType.danger:
+        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        break;
+      case ButtonType.primary:
+      default:
+        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+    }
+    return computedColor;
   }
 }
