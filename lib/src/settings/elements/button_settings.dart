@@ -2,14 +2,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_suitup/flutter_suitup.dart';
 
 class SuitupButtonSettings {
-  SuitupSettings get s => SuitupSettings.instance;
+  SuitupSettings get _suitup => SuitupSettings.instance;
 
   /// Padding ///
   EdgeInsets _padding;
 
   set padding(EdgeInsets value) => _padding = value;
 
-  EdgeInsets get padding => _padding ?? EdgeInsets.symmetric(horizontal: (s.rem * 2), vertical: s.rem);
+  EdgeInsets get padding => _padding ?? EdgeInsets.symmetric(horizontal: (_suitup.rem * 2), vertical: _suitup.rem);
 
   ///  Margin ///
   EdgeInsets _margin;
