@@ -1,6 +1,6 @@
 library flutter_suitup;
 
-export 'src/suitup_settings.dart';
+export 'src/settings/suitup_settings.dart';
 
 // Components
 export 'src/components/card.dart';

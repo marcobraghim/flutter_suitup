@@ -18,16 +18,32 @@ import 'package:flutter_suitup/flutter_suitup.dart';
 // }
 //
 
-enum ButtonType { none, white, light, dark, black, text, ghost, primary, link, info, success, warning, danger }
+enum ButtonType {
+  none,
+  white,
+  light,
+  dark,
+  black,
+  text,
+  ghost,
+  primary,
+  link,
+  info,
+  success,
+  warning,
+  danger,
+}
 
 class Button extends StatelessWidget {
   final Widget child;
   final ButtonType type;
-  final Color color;
   final Function onTap;
   final bool active;
   final EdgeInsets padding;
   final EdgeInsets margin;
+  final Color color;
+  final Border border;
+  final BorderRadius borderRadius;
 
   /// A button element
   ///
@@ -37,11 +53,13 @@ class Button extends StatelessWidget {
     Key key,
     @required this.child,
     this.type = ButtonType.primary,
-    this.color,
     @required this.onTap,
     this.active = true,
     this.padding,
     this.margin,
+    this.color,
+    this.border,
+    this.borderRadius,
   })  : assert(child != null, 'This element needs a child'),
         assert(type != null || color != null, 'You need to provide a TYPE or a COLOR to your button'),
         assert(onTap != null, 'Provide an action to trigger on tap this ACTIVE button'),
@@ -49,7 +67,9 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final s = SuitupSettings.instance;
+    //
+    // Button Settings
+    final bs = SuitupSettings.instance.buttonSettings;
 
     var computedColor = color ?? _computeColorByType();
 
@@ -58,11 +78,12 @@ class Button extends StatelessWidget {
     return GestureDetector(
       onTap: active ? onTap : null,
       child: Container(
-        padding: padding ?? EdgeInsets.symmetric(horizontal: s.em, vertical: s.em / 2),
-        margin: margin ?? EdgeInsets.symmetric(horizontal: 3), // @todo setting
+        padding: padding ?? bs.padding,
+        margin: margin ?? bs.margin,
         decoration: BoxDecoration(
           color: computedColor,
-          borderRadius: BorderRadius.circular(6), // @todo setting
+          borderRadius: borderRadius ?? bs.borderRadius,
+          border: border ?? bs.border,
         ),
         child: child,
       ),

@@ -5,8 +5,8 @@ import 'package:flutter_suitup/flutter_suitup.dart';
 
 void main() {
   var suitup = SuitupSettings.instance;
-
-  suitup.em = 2;
+  suitup.buttonSettings.borderRadius = BorderRadius.circular(15);
+  // suitup.rem = 2;
 
   runApp(MyApp());
 }
