@@ -14,11 +14,12 @@ class SuitupSettings {
 
   // global settings
   double remFactor = 10;
+  double baseRadius = 6;
 
+  /// REM
+  /// This is a relative parameter, all the spaces will be calculated
+  /// using it as reference
   double _remValue = 1.0;
-
   set rem(double val) => _remValue = val;
-
-  /// Returns the current remFactor by remValue
   double get rem => remFactor * _remValue;
 }

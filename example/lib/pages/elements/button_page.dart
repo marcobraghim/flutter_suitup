@@ -55,13 +55,16 @@ class _ButtonPageState extends State<ButtonPage> {
               ],
             ),
             SizedBox(height: 20),
+            SizedBox(
+              width: double.maxFinite,
+              child: Button(
+                child: Text('Primary'),
+                onTap: () => print('Primary button tapped'),
+                borderRadius: BorderRadius.zero,
+              ),
+            ),
             Row(
               children: [
-                Button(
-                  child: Text('Primary'),
-                  onTap: () => print('Primary button tapped'),
-                  borderRadius: BorderRadius.zero,
-                ),
                 Button(
                   child: Text('Link'),
                   type: ButtonType.link,

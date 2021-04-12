@@ -1,47 +1,20 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_suitup/flutter_suitup.dart';
 
-//
-// .button {
-//   background-color: white;
-//   border-color: #dbdbdb;
-//   border-width: 1px;
-//   color: #363636;
-//   cursor: pointer;
-//   justify-content: center;
-//   padding-bottom: calc(0.5em - 1px);
-//   padding-left: 1em;
-//   padding-right: 1em;
-//   padding-top: calc(0.5em - 1px);
-//   text-align: center;
-//   white-space: nowrap;
-// }
-//
-
-enum ButtonType {
-  none,
-  white,
-  light,
-  dark,
-  black,
-  text,
-  ghost,
-  primary,
-  link,
-  info,
-  success,
-  warning,
-  danger,
-}
+enum ButtonType { none, white, light, dark, black, text, ghost, primary, link, info, success, warning, danger }
 
 class Button extends StatelessWidget {
   final Widget child;
   final ButtonType type;
   final Function onTap;
   final bool active;
+  final Alignment alignment;
   final EdgeInsets padding;
   final EdgeInsets margin;
+  final double width;
+  final double height;
   final Color color;
+  final Color inactiveColor;
   final Border border;
   final BorderRadius borderRadius;
 
@@ -55,9 +28,13 @@ class Button extends StatelessWidget {
     this.type = ButtonType.primary,
     @required this.onTap,
     this.active = true,
+    this.alignment,
     this.padding,
     this.margin,
+    this.width,
+    this.height,
     this.color,
+    this.inactiveColor,
     this.border,
     this.borderRadius,
   })  : assert(child != null, 'This element needs a child'),
@@ -71,13 +48,18 @@ class Button extends StatelessWidget {
     // Button Settings
     final bs = SuitupSettings.instance.buttonSettings;
 
+    // Compute the color of the button
     var computedColor = color ?? _computeColorByType();
-
-    // @todo Default text style
+    if (active == false && inactiveColor != null) {
+      computedColor = inactiveColor;
+    }
 
     return GestureDetector(
       onTap: active ? onTap : null,
       child: Container(
+        width: width,
+        height: height,
+        alignment: alignment ?? bs.alignment,
         padding: padding ?? bs.padding,
         margin: margin ?? bs.margin,
         decoration: BoxDecoration(
