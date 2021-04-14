@@ -12,7 +12,26 @@ class SuitupButtonSettings {
   /// Padding ///
   EdgeInsets _padding;
   set padding(EdgeInsets value) => _padding = value;
-  EdgeInsets get padding => _padding ?? EdgeInsets.symmetric(horizontal: (_suitup.rem * 2), vertical: _suitup.rem);
+  EdgeInsets getPadding(ButtonSize size) {
+    var result = _padding;
+    if (_padding == null) {
+      switch (size) {
+        case ButtonSize.small:
+          result = EdgeInsets.symmetric(horizontal: (_suitup.rem * 1.5), vertical: _suitup.rem * 0.5);
+          break;
+        case ButtonSize.medium:
+          result = EdgeInsets.symmetric(horizontal: (_suitup.rem * 2.5), vertical: _suitup.rem * 1.5);
+          break;
+        case ButtonSize.large:
+          result = EdgeInsets.symmetric(horizontal: (_suitup.rem * 3), vertical: _suitup.rem * 2);
+          break;
+        case ButtonSize.normal:
+        default:
+          result = EdgeInsets.symmetric(horizontal: (_suitup.rem * 2), vertical: _suitup.rem);
+      }
+    }
+    return result;
+  }
 
   ///  Margin ///
   EdgeInsets _margin;

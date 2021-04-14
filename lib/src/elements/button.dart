@@ -3,9 +3,13 @@ import 'package:flutter_suitup/flutter_suitup.dart';
 
 enum ButtonType { none, white, light, dark, black, text, ghost, primary, link, info, success, warning, danger }
 
+enum ButtonSize { small, normal, medium, large }
+
 class Button extends StatelessWidget {
   final Widget child;
   final ButtonType type;
+  final bool isLight;
+  final ButtonSize size;
   final Function onTap;
   final bool active;
   final Alignment alignment;
@@ -26,6 +30,8 @@ class Button extends StatelessWidget {
     Key key,
     @required this.child,
     this.type = ButtonType.primary,
+    this.isLight = false,
+    this.size = ButtonSize.normal,
     @required this.onTap,
     this.active = true,
     this.alignment,
@@ -60,12 +66,12 @@ class Button extends StatelessWidget {
         width: width,
         height: height,
         alignment: alignment ?? bs.alignment,
-        padding: padding ?? bs.padding,
+        padding: padding ?? bs.getPadding(size),
         margin: margin ?? bs.margin,
         decoration: BoxDecoration(
           color: computedColor,
           borderRadius: borderRadius ?? bs.borderRadius,
-          border: border ?? bs.border,
+          border: border ?? (type == ButtonType.white) ? bs.border : null,
         ),
         child: child,
       ),
@@ -74,46 +80,42 @@ class Button extends StatelessWidget {
 
   Color _computeColorByType() {
     Color computedColor;
+
     switch (type) {
-      case ButtonType.white:
-        computedColor = Color.fromRGBO(255, 255, 255, 1); // @todo setting
-        break;
       case ButtonType.light:
-        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        computedColor = Color(int.parse('FFf5f5f5', radix: 16));
         break;
       case ButtonType.dark:
-        computedColor = Color.fromRGBO(0, 0, 0, 1); // @todo setting
+        computedColor = Color(int.parse('FF363636', radix: 16));
         break;
       case ButtonType.black:
-        computedColor = Color.fromRGBO(0, 0, 0, 1); // @todo setting
+        computedColor = Color(int.parse('FF000000', radix: 16));
         break;
       case ButtonType.text:
-        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
-        break;
       case ButtonType.ghost:
-        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
-        break;
-      case ButtonType.primary:
-        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        computedColor = Color(int.parse('00000000', radix: 16));
         break;
       case ButtonType.link:
-        computedColor = Color.fromRGBO(72, 95, 199, 1); // @todo setting
+        computedColor = Color(int.parse(isLight ? 'FFeff1fa' : 'FF485fc7', radix: 16));
         break;
       case ButtonType.info:
-        computedColor = Color.fromRGBO(62, 142, 208, 1); // @todo setting
+        computedColor = Color(int.parse(isLight ? 'FFeff5fb' : 'FF3e8ed0', radix: 16));
         break;
       case ButtonType.success:
-        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        computedColor = Color(int.parse(isLight ? 'FFeffaf5' : 'FF48c78e', radix: 16));
         break;
       case ButtonType.warning:
-        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        computedColor = Color(int.parse(isLight ? 'FFfffaeb' : 'FFffe08a', radix: 16));
         break;
       case ButtonType.danger:
-        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        computedColor = Color(int.parse(isLight ? 'FFfeecf0' : 'FFf14668', radix: 16));
         break;
       case ButtonType.primary:
+        computedColor = Color(int.parse(isLight ? 'FFebfffc' : 'FF00d1b2', radix: 16));
+        break;
+      case ButtonType.white:
       default:
-        computedColor = Color.fromRGBO(0, 209, 178, 1); // @todo setting
+        computedColor = Color(int.parse('FFFFFFFF', radix: 16));
     }
     return computedColor;
   }
