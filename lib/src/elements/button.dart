@@ -52,7 +52,7 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     //
     // Button Settings
-    final bs = SuitupSettings.instance.buttonSettings;
+    final bs = SuitupSettings.instance.buttons;
 
     // Compute the color of the button
     var computedColor = color ?? _computeColorByType();
@@ -79,43 +79,44 @@ class Button extends StatelessWidget {
   }
 
   Color _computeColorByType() {
-    Color computedColor;
+    final colors = SuitupSettings.instance.colors;
 
+    Color computedColor;
     switch (type) {
       case ButtonType.light:
-        computedColor = Color(int.parse('FFf5f5f5', radix: 16));
+        computedColor = colors.light;
         break;
       case ButtonType.dark:
-        computedColor = Color(int.parse('FF363636', radix: 16));
+        computedColor = colors.dark;
         break;
       case ButtonType.black:
-        computedColor = Color(int.parse('FF000000', radix: 16));
+        computedColor = colors.black;
         break;
       case ButtonType.text:
       case ButtonType.ghost:
-        computedColor = Color(int.parse('00000000', radix: 16));
+        computedColor = colors.text;
         break;
       case ButtonType.link:
-        computedColor = Color(int.parse(isLight ? 'FFeff1fa' : 'FF485fc7', radix: 16));
+        computedColor = isLight ? colors.lightLink : colors.link;
         break;
       case ButtonType.info:
-        computedColor = Color(int.parse(isLight ? 'FFeff5fb' : 'FF3e8ed0', radix: 16));
+        computedColor = isLight ? colors.lightInfo : colors.info;
         break;
       case ButtonType.success:
-        computedColor = Color(int.parse(isLight ? 'FFeffaf5' : 'FF48c78e', radix: 16));
+        computedColor = isLight ? colors.lightSuccess : colors.success;
         break;
       case ButtonType.warning:
-        computedColor = Color(int.parse(isLight ? 'FFfffaeb' : 'FFffe08a', radix: 16));
+        computedColor = isLight ? colors.lightWarning : colors.warning;
         break;
       case ButtonType.danger:
-        computedColor = Color(int.parse(isLight ? 'FFfeecf0' : 'FFf14668', radix: 16));
+        computedColor = isLight ? colors.lightDanger : colors.danger;
         break;
       case ButtonType.primary:
-        computedColor = Color(int.parse(isLight ? 'FFebfffc' : 'FF00d1b2', radix: 16));
+        computedColor = isLight ? colors.lightPrimary : colors.primary;
         break;
       case ButtonType.white:
       default:
-        computedColor = Color(int.parse('FFFFFFFF', radix: 16));
+        computedColor = colors.white;
     }
     return computedColor;
   }

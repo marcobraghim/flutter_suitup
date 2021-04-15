@@ -6,7 +6,9 @@ import 'package:flutter_suitup/flutter_suitup.dart';
 void main() {
   var suitup = SuitupSettings.instance;
   // suitup.buttonSettings.borderRadius = BorderRadius.circular(15);
-  // suitup.rem = 2;
+  // suitup.rem = 0.1;
+
+  // suitup.colors.white = Color.fromRGBO(0, 0, 128, .2);
 
   runApp(MyApp());
 }
