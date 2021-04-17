@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_suitup/flutter_suitup.dart';
 
@@ -11,6 +13,7 @@ class Button extends StatefulWidget {
   final bool isLight;
   final ButtonSize size;
   final Function onTap;
+  final Duration onTapDuration;
   final bool active;
   final Alignment alignment;
   final EdgeInsets padding;
@@ -26,13 +29,15 @@ class Button extends StatefulWidget {
   ///
   /// When [color] is defined the [type] parameter is completely ignored.
   ///
-  Button({
+  /// When [onTapDuration] is explicit null no tap animation is applied
+  const Button({
     Key key,
     @required this.child,
     this.type = ButtonType.primary,
     this.isLight = false,
     this.size = ButtonSize.normal,
     @required this.onTap,
+    this.onTapDuration = const Duration(milliseconds: 60),
     this.active = true,
     this.alignment,
     this.padding,
@@ -52,11 +57,10 @@ class Button extends StatefulWidget {
   _ButtonState createState() => _ButtonState();
 }
 
-class _ButtonState extends State<Button> with SingleTickerProviderStateMixin {
+class _ButtonState extends State<Button> {
   Color _computedColor;
-
-  AnimationController _controller;
-  Animation<double> _animation;
+  double _pressOpacity = 1;
+  bool _isPressed = false;
 
   @override
   void initState() {
@@ -66,23 +70,7 @@ class _ButtonState extends State<Button> with SingleTickerProviderStateMixin {
       _computedColor = widget.inactiveColor;
     }
 
-    // Tap animation
-    _controller = AnimationController(duration: Duration(milliseconds: 100), vsync: this);
-    _animation = Tween<double>(begin: _computedColor.opacity, end: 0.0).animate(_controller);
-    _animation.addListener(() => setState(() {}));
-    _controller.value = _computedColor.opacity;
-
-    if (widget.type == ButtonType.ghost) {
-      print('Ghost opacity: ${_computedColor.opacity} - ${_controller.lowerBound} - ${_controller.upperBound}');
-    }
-
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -91,25 +79,40 @@ class _ButtonState extends State<Button> with SingleTickerProviderStateMixin {
     // Button Settings
     final bs = SuitupSettings.instance.buttons;
 
-    print([_computedColor, _controller.value]);
-
     return GestureDetector(
       onTap: widget.active ? widget.onTap : null,
-      onTapDown: (details) => _controller.animateBack(0.3, duration: Duration(milliseconds: 50)),
-      onTapUp: (details) => _controller.forward(),
-      onTapCancel: () => _controller.forward(),
-      child: Container(
-        width: widget.width,
-        height: widget.height,
-        alignment: widget.alignment ?? bs.alignment,
-        padding: widget.padding ?? bs.getPadding(widget.size),
-        margin: widget.margin ?? bs.margin,
-        decoration: BoxDecoration(
-          color: _computedColor.withOpacity(_controller.value),
-          borderRadius: widget.borderRadius ?? bs.borderRadius,
-          border: widget.border ?? (widget.type == ButtonType.white) ? bs.border : null,
+      onTapDown: (details) {
+        if (widget.onTapDuration != null) {
+          _isPressed = true;
+          setState(() => _pressOpacity = .6);
+        }
+      },
+      onTapUp: (details) => _isPressed = false,
+      onTapCancel: () => _isPressed = false,
+      child: AnimatedOpacity(
+        duration: widget.onTapDuration ?? Duration(),
+        opacity: _pressOpacity,
+        onEnd: () {
+          Timer.periodic(Duration(milliseconds: 10), (timer) {
+            if (_isPressed == false) {
+              timer.cancel();
+              setState(() => _pressOpacity = 1);
+            }
+          });
+        },
+        child: Container(
+          width: widget.width,
+          height: widget.height,
+          alignment: widget.alignment ?? bs.alignment,
+          padding: widget.padding ?? bs.getPadding(widget.size),
+          margin: widget.margin ?? bs.margin,
+          decoration: BoxDecoration(
+            color: _computedColor,
+            borderRadius: widget.borderRadius ?? bs.borderRadius,
+            border: widget.border ?? (widget.type == ButtonType.white) ? bs.border : null,
+          ),
+          child: widget.child,
         ),
-        child: widget.child,
       ),
     );
   }

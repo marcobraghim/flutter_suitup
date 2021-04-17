@@ -101,6 +101,7 @@ class _ButtonPageState extends State<ButtonPage> {
                       child: Text('Info', style: whiteTextStyle),
                       type: ButtonType.info,
                       onTap: () => print('Info button tapped'),
+                      onTapDuration: null,
                     ),
                     Button(
                       width: 120,
