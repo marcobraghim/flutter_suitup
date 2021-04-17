@@ -11,6 +11,8 @@ class Button extends StatefulWidget {
   final Widget child;
   final ButtonType type;
   final bool isLight;
+  final bool isOutline;
+  final Color outlineBackground;
   final ButtonSize size;
   final Function onTap;
   final Duration onTapDuration;
@@ -35,6 +37,8 @@ class Button extends StatefulWidget {
     @required this.child,
     this.type = ButtonType.primary,
     this.isLight = false,
+    this.isOutline = false,
+    this.outlineBackground,
     this.size = ButtonSize.normal,
     @required this.onTap,
     this.onTapDuration = const Duration(milliseconds: 60),
@@ -51,6 +55,9 @@ class Button extends StatefulWidget {
   })  : assert(child != null, 'This element needs a child'),
         assert(type != null || color != null, 'You need to provide a TYPE or a COLOR to your button'),
         assert(onTap != null, 'Provide an action to trigger on tap this ACTIVE button'),
+        assert((isLight == true && isOutline == true) == false, "Outline buttons can't be light"),
+        assert((isOutline == false && outlineBackground != null) == false,
+            "'outlineBackground' parameter requires 'isOutline' to be true"),
         super(key: key);
 
   @override
@@ -58,20 +65,8 @@ class Button extends StatefulWidget {
 }
 
 class _ButtonState extends State<Button> {
-  Color _computedColor;
-  double _pressOpacity = 1;
+  double _currOpacity = 1;
   bool _isPressed = false;
-
-  @override
-  void initState() {
-    // Compute the color of the button
-    _computedColor = widget.color ?? _computeColorByType();
-    if (widget.active == false && widget.inactiveColor != null) {
-      _computedColor = widget.inactiveColor;
-    }
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,24 +74,39 @@ class _ButtonState extends State<Button> {
     // Button Settings
     final bs = SuitupSettings.instance.buttons;
 
+    // Compute the color of the button
+    var computedColor = widget.color ?? _computeColorByType();
+    if (widget.active == false && widget.inactiveColor != null) {
+      computedColor = widget.inactiveColor;
+    }
+
+    var computedBorder = widget.border;
+    if (computedBorder == null) {
+      if (widget.isOutline) {
+        computedBorder = Border.fromBorderSide(BorderSide(color: computedColor));
+      } else {
+        computedBorder = (widget.type == ButtonType.white) ? bs.border : null;
+      }
+    }
+
     return GestureDetector(
       onTap: widget.active ? widget.onTap : null,
       onTapDown: (details) {
         if (widget.onTapDuration != null) {
           _isPressed = true;
-          setState(() => _pressOpacity = .6);
+          setState(() => _currOpacity = .6);
         }
       },
       onTapUp: (details) => _isPressed = false,
       onTapCancel: () => _isPressed = false,
       child: AnimatedOpacity(
         duration: widget.onTapDuration ?? Duration(),
-        opacity: _pressOpacity,
+        opacity: _currOpacity,
         onEnd: () {
           Timer.periodic(Duration(milliseconds: 10), (timer) {
             if (_isPressed == false) {
               timer.cancel();
-              setState(() => _pressOpacity = 1);
+              setState(() => _currOpacity = 1);
             }
           });
         },
@@ -107,9 +117,9 @@ class _ButtonState extends State<Button> {
           padding: widget.padding ?? bs.getPadding(widget.size),
           margin: widget.margin ?? bs.margin,
           decoration: BoxDecoration(
-            color: _computedColor,
+            color: widget.isOutline ? widget.outlineBackground ?? Color(0).withOpacity(0.0) : computedColor,
             borderRadius: widget.borderRadius ?? bs.borderRadius,
-            border: widget.border ?? (widget.type == ButtonType.white) ? bs.border : null,
+            border: computedBorder,
           ),
           child: widget.child,
         ),
