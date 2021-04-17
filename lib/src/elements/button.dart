@@ -5,7 +5,7 @@ enum ButtonType { none, white, light, dark, black, text, ghost, primary, link, i
 
 enum ButtonSize { small, normal, medium, large }
 
-class Button extends StatelessWidget {
+class Button extends StatefulWidget {
   final Widget child;
   final ButtonType type;
   final bool isLight;
@@ -26,7 +26,7 @@ class Button extends StatelessWidget {
   ///
   /// When [color] is defined the [type] parameter is completely ignored.
   ///
-  const Button({
+  Button({
     Key key,
     @required this.child,
     this.type = ButtonType.primary,
@@ -49,31 +49,67 @@ class Button extends StatelessWidget {
         super(key: key);
 
   @override
+  _ButtonState createState() => _ButtonState();
+}
+
+class _ButtonState extends State<Button> with SingleTickerProviderStateMixin {
+  Color _computedColor;
+
+  AnimationController _controller;
+  Animation<double> _animation;
+
+  @override
+  void initState() {
+    // Compute the color of the button
+    _computedColor = widget.color ?? _computeColorByType();
+    if (widget.active == false && widget.inactiveColor != null) {
+      _computedColor = widget.inactiveColor;
+    }
+
+    // Tap animation
+    _controller = AnimationController(duration: Duration(milliseconds: 100), vsync: this);
+    _animation = Tween<double>(begin: _computedColor.opacity, end: 0.0).animate(_controller);
+    _animation.addListener(() => setState(() {}));
+    _controller.value = _computedColor.opacity;
+
+    if (widget.type == ButtonType.ghost) {
+      print('Ghost opacity: ${_computedColor.opacity} - ${_controller.lowerBound} - ${_controller.upperBound}');
+    }
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     //
     // Button Settings
     final bs = SuitupSettings.instance.buttons;
 
-    // Compute the color of the button
-    var computedColor = color ?? _computeColorByType();
-    if (active == false && inactiveColor != null) {
-      computedColor = inactiveColor;
-    }
+    print([_computedColor, _controller.value]);
 
     return GestureDetector(
-      onTap: active ? onTap : null,
+      onTap: widget.active ? widget.onTap : null,
+      onTapDown: (details) => _controller.animateBack(0.3, duration: Duration(milliseconds: 50)),
+      onTapUp: (details) => _controller.forward(),
+      onTapCancel: () => _controller.forward(),
       child: Container(
-        width: width,
-        height: height,
-        alignment: alignment ?? bs.alignment,
-        padding: padding ?? bs.getPadding(size),
-        margin: margin ?? bs.margin,
+        width: widget.width,
+        height: widget.height,
+        alignment: widget.alignment ?? bs.alignment,
+        padding: widget.padding ?? bs.getPadding(widget.size),
+        margin: widget.margin ?? bs.margin,
         decoration: BoxDecoration(
-          color: computedColor,
-          borderRadius: borderRadius ?? bs.borderRadius,
-          border: border ?? (type == ButtonType.white) ? bs.border : null,
+          color: _computedColor.withOpacity(_controller.value),
+          borderRadius: widget.borderRadius ?? bs.borderRadius,
+          border: widget.border ?? (widget.type == ButtonType.white) ? bs.border : null,
         ),
-        child: child,
+        child: widget.child,
       ),
     );
   }
@@ -82,7 +118,7 @@ class Button extends StatelessWidget {
     final colors = SuitupSettings.instance.colors;
 
     Color computedColor;
-    switch (type) {
+    switch (widget.type) {
       case ButtonType.light:
         computedColor = colors.light;
         break;
@@ -97,22 +133,22 @@ class Button extends StatelessWidget {
         computedColor = colors.text;
         break;
       case ButtonType.link:
-        computedColor = isLight ? colors.lightLink : colors.link;
+        computedColor = widget.isLight ? colors.lightLink : colors.link;
         break;
       case ButtonType.info:
-        computedColor = isLight ? colors.lightInfo : colors.info;
+        computedColor = widget.isLight ? colors.lightInfo : colors.info;
         break;
       case ButtonType.success:
-        computedColor = isLight ? colors.lightSuccess : colors.success;
+        computedColor = widget.isLight ? colors.lightSuccess : colors.success;
         break;
       case ButtonType.warning:
-        computedColor = isLight ? colors.lightWarning : colors.warning;
+        computedColor = widget.isLight ? colors.lightWarning : colors.warning;
         break;
       case ButtonType.danger:
-        computedColor = isLight ? colors.lightDanger : colors.danger;
+        computedColor = widget.isLight ? colors.lightDanger : colors.danger;
         break;
       case ButtonType.primary:
-        computedColor = isLight ? colors.lightPrimary : colors.primary;
+        computedColor = widget.isLight ? colors.lightPrimary : colors.primary;
         break;
       case ButtonType.white:
       default:
