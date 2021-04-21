@@ -1,3 +1,4 @@
+import 'package:example/pages/elements/box_page.dart';
 import 'package:example/pages/elements/button_page.dart';
 import 'package:example/pages/home_page.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(),
       routes: {
         ButtonPage.tag: (_) => ButtonPage(),
+        BoxPage.tag: (_) => BoxPage(),
       },
     );
   }

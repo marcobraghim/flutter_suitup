@@ -1,3 +1,4 @@
+import 'package:example/pages/elements/box_page.dart';
 import 'package:example/pages/elements/button_page.dart';
 import 'package:example/pages/layout.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +22,26 @@ class _MyHomePageState extends State<MyHomePage> {
               'Elements',
               style: TextStyle(fontSize: 24),
             ),
-            FlatButton(
-              color: Colors.blue,
-              onPressed: () => Navigator.of(context).pushNamed(ButtonPage.tag),
-              child: Text(
-                'Button',
-                style: TextStyle(color: Colors.white),
-              ),
+            Row(
+              children: [
+                FlatButton(
+                  color: Colors.blue,
+                  onPressed: () => Navigator.of(context).pushNamed(BoxPage.tag),
+                  child: Text(
+                    'Box',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox(width: 10),
+                FlatButton(
+                  color: Colors.blue,
+                  onPressed: () => Navigator.of(context).pushNamed(ButtonPage.tag),
+                  child: Text(
+                    'Button',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

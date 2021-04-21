@@ -6,4 +6,5 @@ export 'src/settings/suitup_settings.dart';
 export 'src/components/card.dart';
 
 // Elements
+export 'src/elements/box.dart';
 export 'src/elements/button.dart';

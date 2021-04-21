@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_suitup/flutter_suitup.dart';
 
 class ButtonPage extends StatefulWidget {
-  static String tag = 'elements/button';
+  static String tag = '/elements/button';
 
   @override
   _ButtonPageState createState() => _ButtonPageState();
