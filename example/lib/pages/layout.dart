@@ -3,11 +3,9 @@ import 'package:flutter_suitup/flutter_suitup.dart';
 
 class Layout {
   static Widget render({
-    @required Widget content,
+    required Widget content,
     String title = 'Suitup Flutter Theme',
   }) {
-    assert(content != null, 'Content must not be null');
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: SuitupSettings.instance.colors.primary,
