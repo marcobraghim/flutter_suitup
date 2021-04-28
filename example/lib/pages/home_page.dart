@@ -1,7 +1,9 @@
 import 'package:example/pages/elements/box_page.dart';
 import 'package:example/pages/elements/button_page.dart';
+import 'package:example/pages/elements/title_page.dart';
 import 'package:example/pages/layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_suitup/flutter_suitup.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -24,20 +26,26 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Row(
               children: [
-                FlatButton(
-                  color: Colors.blue,
-                  onPressed: () => Navigator.of(context).pushNamed(BoxPage.tag),
+                Button(
+                  onTap: () => Navigator.of(context).pushNamed(BoxPage.tag),
                   child: Text(
                     'Box',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
                 SizedBox(width: 10),
-                FlatButton(
-                  color: Colors.blue,
-                  onPressed: () => Navigator.of(context).pushNamed(ButtonPage.tag),
+                Button(
+                  onTap: () => Navigator.of(context).pushNamed(ButtonPage.tag),
                   child: Text(
                     'Button',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Button(
+                  onTap: () => Navigator.of(context).pushNamed(TitlePage.tag),
+                  child: Text(
+                    'Title',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

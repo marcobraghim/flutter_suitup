@@ -38,6 +38,7 @@ class _BoxState extends State<Box> {
     final colors = suitup.colors;
 
     return Container(
+      margin: widget.margin ?? EdgeInsets.symmetric(vertical: suitup.rem / 1.5),
       padding: widget.padding ?? EdgeInsets.all(suitup.rem * 1.25),
       width: widget.width,
       height: widget.height,

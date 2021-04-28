@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_suitup/flutter_suitup.dart';
 
 class Layout {
   static Widget render({
@@ -9,6 +10,7 @@ class Layout {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: SuitupSettings.instance.colors.primary,
         title: Text(title),
       ),
       body: content,

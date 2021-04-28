@@ -72,7 +72,7 @@ class _ButtonState extends State<Button> {
   Widget build(BuildContext context) {
     //
     // Button Settings
-    final bs = SuitupSettings.instance.buttons;
+    final button = SuitupSettings.instance.buttons;
 
     // Compute the color of the button
     var computedColor = widget.color ?? _computeColorByType();
@@ -85,7 +85,7 @@ class _ButtonState extends State<Button> {
       if (widget.isOutline) {
         computedBorder = Border.fromBorderSide(BorderSide(color: computedColor));
       } else {
-        computedBorder = (widget.type == ButtonType.white) ? bs.border : null;
+        computedBorder = (widget.type == ButtonType.white) ? button.border : null;
       }
     }
 
@@ -113,12 +113,12 @@ class _ButtonState extends State<Button> {
         child: Container(
           width: widget.width,
           height: widget.height,
-          alignment: widget.alignment ?? bs.alignment,
-          padding: widget.padding ?? bs.getPadding(widget.size),
-          margin: widget.margin ?? bs.margin,
+          alignment: widget.alignment ?? button.alignment,
+          padding: widget.padding ?? button.getPadding(widget.size),
+          margin: widget.margin ?? button.margin,
           decoration: BoxDecoration(
             color: widget.isOutline ? widget.outlineBackground ?? Color(0).withOpacity(0.0) : computedColor,
-            borderRadius: widget.borderRadius ?? bs.borderRadius,
+            borderRadius: widget.borderRadius ?? button.borderRadius,
             border: computedBorder,
           ),
           child: widget.child,
