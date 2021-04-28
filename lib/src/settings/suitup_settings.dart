@@ -6,8 +6,8 @@ class SuitupSettings {
   static final SuitupSettings _instance = SuitupSettings._construct();
   static SuitupSettings get instance => _instance;
 
-  SuitupButtonSettings buttons;
-  SuitupColorSettings colors;
+  late SuitupButtonSettings buttons;
+  late SuitupColorSettings colors;
 
   // Construction one time run
   SuitupSettings._construct() {

@@ -2,19 +2,19 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_suitup/flutter_suitup.dart';
 
 class Box extends StatefulWidget {
-  final Color backgroundColor;
-  final BorderRadius borderRadius;
-  final Alignment alignment;
-  final EdgeInsets padding;
-  final double width;
-  final double height;
-  final List<BoxShadow> shadows;
-  final BoxConstraints constraints;
-  final EdgeInsets margin;
-  final Widget child;
+  final Color? backgroundColor;
+  final BorderRadius? borderRadius;
+  final Alignment? alignment;
+  final EdgeInsets? padding;
+  final double? width;
+  final double? height;
+  final List<BoxShadow>? shadows;
+  final BoxConstraints? constraints;
+  final EdgeInsets? margin;
+  final Widget? child;
 
   Box({
-    Key key,
+    Key? key,
     this.backgroundColor,
     this.borderRadius,
     this.alignment,

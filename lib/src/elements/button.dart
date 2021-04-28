@@ -9,23 +9,23 @@ enum ButtonSize { small, normal, medium, large }
 
 class Button extends StatefulWidget {
   final Widget child;
-  final ButtonType type;
+  final ButtonType? type;
   final bool isLight;
   final bool isOutline;
-  final Color outlineBackground;
+  final Color? outlineBackground;
   final ButtonSize size;
-  final Function onTap;
-  final Duration onTapDuration;
+  final void Function() onTap;
+  final Duration? onTapDuration;
   final bool active;
-  final Alignment alignment;
-  final EdgeInsets padding;
-  final EdgeInsets margin;
-  final double width;
-  final double height;
-  final Color color;
-  final Color inactiveColor;
-  final Border border;
-  final BorderRadius borderRadius;
+  final Alignment? alignment;
+  final EdgeInsets? padding;
+  final EdgeInsets? margin;
+  final double? width;
+  final double? height;
+  final Color? color;
+  final Color? inactiveColor;
+  final Border? border;
+  final BorderRadius? borderRadius;
 
   /// A button element
   ///
@@ -33,14 +33,14 @@ class Button extends StatefulWidget {
   ///
   /// When [onTapDuration] is explicit null no tap animation is applied
   const Button({
-    Key key,
-    @required this.child,
+    Key? key,
+    required this.child,
     this.type = ButtonType.primary,
     this.isLight = false,
     this.isOutline = false,
     this.outlineBackground,
     this.size = ButtonSize.normal,
-    @required this.onTap,
+    required this.onTap,
     this.onTapDuration = const Duration(milliseconds: 60),
     this.active = true,
     this.alignment,
@@ -52,9 +52,7 @@ class Button extends StatefulWidget {
     this.inactiveColor,
     this.border,
     this.borderRadius,
-  })  : assert(child != null, 'This element needs a child'),
-        assert(type != null || color != null, 'You need to provide a TYPE or a COLOR to your button'),
-        assert(onTap != null, 'Provide an action to trigger on tap this ACTIVE button'),
+  })  : assert(type != null || color != null, 'You need to provide a TYPE or a COLOR to your button'),
         assert((isLight == true && isOutline == true) == false, "Outline buttons can't be light"),
         assert((isOutline == false && outlineBackground != null) == false,
             "'outlineBackground' parameter requires 'isOutline' to be true"),
@@ -75,7 +73,7 @@ class _ButtonState extends State<Button> {
     final button = SuitupSettings.instance.buttons;
 
     // Compute the color of the button
-    var computedColor = widget.color ?? _computeColorByType();
+    Color? computedColor = widget.color ?? _computeColorByType();
     if (widget.active == false && widget.inactiveColor != null) {
       computedColor = widget.inactiveColor;
     }
@@ -83,7 +81,7 @@ class _ButtonState extends State<Button> {
     var computedBorder = widget.border;
     if (computedBorder == null) {
       if (widget.isOutline) {
-        computedBorder = Border.fromBorderSide(BorderSide(color: computedColor));
+        computedBorder = Border.fromBorderSide(BorderSide(color: computedColor!));
       } else {
         computedBorder = (widget.type == ButtonType.white) ? button.border : null;
       }
