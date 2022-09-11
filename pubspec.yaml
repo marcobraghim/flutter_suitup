@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  google_fonts: ^3.0.1
+  flutter_easyloading: ^3.0.5
 
 dev_dependencies:
   flutter_test:
